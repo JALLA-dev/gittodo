@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FocusTodo - Today</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#723600",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "surface-container-high": "#e6e7f2",
+                        "surface-tint": "#005ac2",
+                        "surface-dim": "#d8d9e3",
+                        "on-surface-variant": "#424754",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#505f76",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#54647a",
+                        "on-tertiary-fixed": "#311400",
+                        "on-secondary-fixed": "#0b1c30",
+                        "tertiary": "#924700",
+                        "background": "#f9f9ff",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-bright": "#f9f9ff",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#d3e4fe",
+                        "outline-variant": "#c2c6d6",
+                        "surface-container": "#ecedf7",
+                        "on-surface": "#191b23",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#fffbff",
+                        "secondary-container": "#d0e1fb",
+                        "inverse-surface": "#2e3038",
+                        "primary-fixed": "#d8e2ff",
+                        "inverse-primary": "#adc6ff",
+                        "tertiary-fixed": "#ffdcc6",
+                        "surface-container-highest": "#e1e2ec",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-primary-container": "#fefcff",
+                        "on-error": "#ffffff",
+                        "primary": "#0058be",
+                        "inverse-on-surface": "#eff0fa",
+                        "primary-container": "#2170e4",
+                        "surface-container-low": "#f2f3fd",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191b23",
+                        "error": "#ba1a1a",
+                        "outline": "#727785",
+                        "on-primary-fixed": "#001a42",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface": "#f9f9ff",
+                        "tertiary-container": "#b75b00",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e1e2ec"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "task-card": "1rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "1rem",
+                        "margin-desktop": "auto",
+                        "item-gap": "0.75rem",
+                        "container-padding": "2.5rem",
+                        "stack-gap": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md-mobile": ["20px", { "lineHeight": "1.3", "fontWeight": "600" }]
+                    },
+                    "boxShadow": {
+                        "soft-main": "0 20px 50px rgba(0,0,0,0.1)"
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Alpine JS style block to prevent flash */
+        [x-cloak] { display: none !important; }
+    </style>
+<!-- Using Alpine.js for lightweight reactivity to simulate React behavior requested -->
+<script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen antialiased flex" x-data="todoApp()">
+<!-- Fixed Background Image with Dark Overlay -->
+<div class="fixed inset-0 z-0">
+<img alt="Mountain landscape at sunset with a small cabin by a lake" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAisqX5eCn9BoKumOsx_cruqYsb1fSHPHrcR9WLrqxA0LjHpvF8KaBY1qWesMUF5gpc7HwSLMmTWSxWgDhTas66ZcI1hv135qHfmE7LCCUtS9GlieCQfZr1l39hGwAePKxxHpyvemX7AkxbwvAoA0dEpPEZPdqOIB1er7lQ1YVM2i__UVrEbP2v6V3owjG2VMXZk0lic9z-1tAfghp67JbGs-EcPx2essqkH-JrdL2lyLMZwBY5si72"/>
+<div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+</div>
+<!-- SideNavBar (from JSON) -->
+<aside class="h-screen w-64 fixed left-0 top-0 hidden lg:flex flex-col bg-surface-container-lowest/80 dark:bg-surface-container-high/20 backdrop-blur-xl border-r border-outline-variant dark:border-outline/20 shadow-xl z-20 flex flex-col h-full p-6 gap-stack-gap text-on-surface-variant">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined fill">account_circle</span>
+</div>
+<div>
+<h2 class="text-headline-md font-headline-md font-black text-primary">Task Master</h2>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Peak Productivity</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<!-- Active Tab: Today -->
+<a class="flex items-center gap-item-gap bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-3 font-bold hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">today</span>
+<span>Today</span>
+</a>
+<!-- Inactive Tabs -->
+<a class="flex items-center gap-item-gap text-on-surface-variant dark:text-outline-variant px-4 py-3 hover:bg-surface-container-high dark:hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span>Planned</span>
+</a>
+<a class="flex items-center gap-item-gap text-on-surface-variant dark:text-outline-variant px-4 py-3 hover:bg-surface-container-high dark:hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">star</span>
+<span>Important</span>
+</a>
+<a class="flex items-center gap-item-gap text-on-surface-variant dark:text-outline-variant px-4 py-3 hover:bg-surface-container-high dark:hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">task_alt</span>
+<span>Completed</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full bg-primary text-on-primary rounded-xl py-3 font-label-sm hover:opacity-80 transition-all mb-4">
+                Upgrade to Pro
+            </button>
+<a class="flex items-center gap-item-gap text-on-surface-variant dark:text-outline-variant px-4 py-2 hover:bg-surface-container-high dark:hover:bg-surface-container rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-item-gap text-on-surface-variant dark:text-outline-variant px-4 py-2 hover:bg-surface-container-high dark:hover:bg-surface-container rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="relative z-10 flex-1 flex flex-col min-h-screen lg:ml-64 w-full">
+<!-- TopAppBar (from JSON) - Mobile only, since SideNav covers Desktop -->
+<header class="lg:hidden bg-transparent w-full flex justify-between items-center px-margin-mobile py-6 z-20">
+<div class="flex items-center gap-3">
+<h1 class="text-headline-md-mobile font-headline-md-mobile font-bold text-on-tertiary">FocusTodo</h1>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-tertiary">search</span>
+<span class="material-symbols-outlined text-on-tertiary">settings</span>
+</div>
+</header>
+<!-- Focus Canvas -->
+<div class="flex-1 flex items-start justify-center p-margin-mobile lg:p-container-padding mt-4 lg:mt-12">
+<!-- Main Task Container -->
+<div class="w-full max-w-[768px] bg-surface-container-lowest rounded-[1rem] shadow-soft-main overflow-hidden relative border border-white/20 backdrop-blur-3xl">
+<!-- Progress Bar -->
+<div :style="`width: ${completionPercentage}%`" class="absolute top-0 left-0 h-1 bg-primary transition-all duration-500 ease-out"></div>
+<div class="p-container-padding">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-surface-variant pb-6">
+<div>
+<h2 class="text-display-lg font-display-lg text-on-surface tracking-tight" x-text="currentDay">Thursday</h2>
+<p class="text-headline-md font-headline-md text-on-surface-variant mt-1" x-text="currentYear">2026</p>
+</div>
+<div class="text-right">
+<span class="text-headline-md font-headline-md text-primary font-bold" x-text="todos.length">3</span>
+<span class="text-body-md font-body-md text-on-surface-variant ml-1">tasks</span>
+</div>
+</div>
+<!-- Input Section -->
+<form @submit.prevent="addTodo" class="mb-8 relative flex items-center group">
+<label class="sr-only" for="new-todo">Write todo</label>
+<input class="w-full bg-surface-container-low text-body-lg font-body-lg text-on-surface rounded-task-card py-4 pl-6 pr-16 border-2 border-transparent focus:border-primary focus:bg-surface-container-lowest focus:shadow-[0_0_15px_rgba(33,112,228,0.1)] transition-all outline-none placeholder:text-outline" id="new-todo" placeholder="Write todo..." type="text" x-model="newTodoText"/>
+<button :disabled="!newTodoText.trim()" class="absolute right-2 w-10 h-10 bg-primary text-on-primary rounded-full flex items-center justify-center hover:bg-primary-container transition-colors disabled:opacity-50" type="submit">
+<span class="material-symbols-outlined">add</span>
+</button>
+</form>
+<!-- Todo List -->
+<div class="flex flex-col gap-item-gap">
+<template :key="todo.id" x-for="todo in todos">
+<!-- Task Item Card -->
+<div :class="{'opacity-75': todo.completed}" class="group bg-surface-container-lowest border border-surface-variant rounded-xl p-4 flex items-center gap-4 transition-all duration-200 hover:border-outline-variant hover:shadow-sm">
+<!-- Read Mode -->
+<div class="flex-1 flex items-center gap-4 w-full" x-show="!todo.isEditing">
+<!-- Custom Checkbox -->
+<button :class="todo.completed ? 'border-primary bg-primary text-on-primary' : 'border-outline text-transparent hover:border-primary'" @click="toggleTodo(todo.id)" class="flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px] font-bold" x-show="todo.completed">check</span>
+</button>
+<!-- Task Text -->
+<span :class="todo.completed ? 'line-through text-outline' : 'text-on-surface'" class="flex-1 text-body-lg font-body-lg transition-all duration-300" x-text="todo.text"></span>
+<!-- Chips (Example static category) -->
+<span class="hidden sm:inline-block px-2 py-1 bg-surface-container text-on-surface-variant text-label-sm font-label-sm rounded-md" x-show="!todo.completed">Inbox</span>
+<!-- Actions (Show on hover) -->
+<div class="flex opacity-0 group-hover:opacity-100 transition-opacity gap-1">
+<button @click="startEdit(todo)" class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button @click="deleteTodo(todo.id)" class="p-2 text-on-surface-variant hover:text-error transition-colors rounded-full hover:bg-error-container">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Edit Mode -->
+<div class="flex-1 flex items-center gap-3 w-full" x-cloak="" x-show="todo.isEditing">
+<input @keydown.enter="saveEdit(todo)" @keydown.escape="cancelEdit(todo)" class="flex-1 bg-surface-container-low text-body-md border-primary border focus:ring-0 rounded-lg px-3 py-2 outline-none" type="text" x-model="todo.editText" x-ref="'editInput' + todo.id"/>
+<button @click="saveEdit(todo)" class="px-4 py-2 bg-primary text-on-primary rounded-lg text-label-sm font-label-sm hover:bg-primary-container transition-colors">
+                                        Update
+                                    </button>
+<button @click="cancelEdit(todo)" class="px-4 py-2 bg-surface-variant text-on-surface-variant rounded-lg text-label-sm font-label-sm hover:bg-outline-variant transition-colors">
+                                        Cancel
+                                    </button>
+</div>
+</div>
+</template>
+<!-- Empty State -->
+<div class="py-12 text-center text-on-surface-variant" x-cloak="" x-show="todos.length === 0">
+<span class="material-symbols-outlined text-[48px] mb-4 opacity-50">task</span>
+<p class="text-body-lg font-body-lg">All caught up! Enjoy your clarity.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('todoApp', () => ({
+                newTodoText: '',
+                currentDay: '',
+                currentYear: '',
+                todos: [
+                    { id: 1, text: 'Review quarterly financial report', completed: false, isEditing: false, editText: '' },
+                    { id: 2, text: 'Finalize design system tokens', completed: true, isEditing: false, editText: '' },
+                    { id: 3, text: 'Prepare presentation for stakeholder meeting', completed: false, isEditing: false, editText: '' }
+                ],
+                
+                init() {
+                    this.updateDate();
+                },
+
+                updateDate() {
+                    const date = new Date();
+                    const optionsDay = { weekday: 'long' };
+                    this.currentDay = new Intl.DateTimeFormat('en-US', optionsDay).format(date);
+                    this.currentYear = date.getFullYear().toString();
+                },
+
+                get completionPercentage() {
+                    if (this.todos.length === 0) return 0;
+                    const completed = this.todos.filter(t => t.completed).length;
+                    return Math.round((completed / this.todos.length) * 100);
+                },
+
+                addTodo() {
+                    if (this.newTodoText.trim() === '') return;
+                    this.todos.unshift({
+                        id: Date.now(),
+                        text: this.newTodoText.trim(),
+                        completed: false,
+                        isEditing: false,
+                        editText: ''
+                    });
+                    this.newTodoText = '';
+                },
+
+                toggleTodo(id) {
+                    const todo = this.todos.find(t => t.id === id);
+                    if (todo) {
+                        todo.completed = !todo.completed;
+                    }
+                },
+
+                deleteTodo(id) {
+                    this.todos = this.todos.filter(t => t.id !== id);
+                },
+
+                startEdit(todo) {
+                    todo.isEditing = true;
+                    todo.editText = todo.text;
+                    // Focus input slightly after it renders
+                    setTimeout(() => {
+                        const input = this.$refs['editInput' + todo.id];
+                        if(input) input.focus();
+                    }, 50);
+                },
+
+                saveEdit(todo) {
+                    if (todo.editText.trim() === '') {
+                        this.deleteTodo(todo.id);
+                        return;
+                    }
+                    todo.text = todo.editText.trim();
+                    todo.isEditing = false;
+                },
+
+                cancelEdit(todo) {
+                    todo.isEditing = false;
+                }
+            }))
+        })
+    </script>
+</body></html>
