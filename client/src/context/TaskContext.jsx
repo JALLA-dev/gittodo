@@ -4,7 +4,9 @@ import { useToast } from "./ToastContext.jsx";
 
 const TaskContext = createContext(undefined);
 
+
 const initialFilters = {
+
   status: "all",
   priority: "all",
   category: "all",
