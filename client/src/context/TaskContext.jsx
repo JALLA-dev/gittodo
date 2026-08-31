@@ -4,9 +4,9 @@ import { useToast } from "./ToastContext.jsx";
 
 const TaskContext = createContext(undefined);
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
 const initialFilters = {
-
   status: "all",
   priority: "all",
   category: "all",
@@ -50,7 +50,9 @@ export function TaskProvider({ children }) {
       if (filters.limit) params.set("limit", String(filters.limit));
       if (filters.overdue) params.set("overdue", "true");
 
-      const res = await fetch(`/api/tasks?${params.toString()}`);
+      const res = await fetch(`${API_BASE_URL}/api/tasks?${params.toString()}`, {
+        credentials: "include",
+      });
       const json = await res.json();
 
       if (json.success) {
@@ -73,7 +75,7 @@ export function TaskProvider({ children }) {
   const refreshStats = async () => {
     if (!user) return;
     try {
-      const res = await fetch("/api/tasks/stats");
+      const res = await fetch(`${API_BASE_URL}/api/tasks/stats`, { credentials: "include" });
       const json = await res.json();
       if (json.success && json.data) setStats(json.data.overview);
     } catch { /* ignore */ }
@@ -105,9 +107,10 @@ export function TaskProvider({ children }) {
 
   const createTask = async (taskData) => {
     try {
-      const res = await fetch("/api/tasks", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(taskData),
       });
       const json = await res.json();
@@ -127,9 +130,10 @@ export function TaskProvider({ children }) {
   const updateTask = async (id, taskData) => {
     setTasks((prev) => prev.map((t) => t.id === id ? { ...t, ...taskData, updatedAt: new Date().toISOString() } : t));
     try {
-      const res = await fetch(`/api/tasks/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(taskData),
       });
       const json = await res.json();
@@ -153,7 +157,10 @@ export function TaskProvider({ children }) {
     setTasks((prev) => prev.filter((t) => t.id !== id));
     setSelectedTaskIds((prev) => prev.filter((i) => i !== id));
     try {
-      const res = await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       const json = await res.json();
       if (!res.ok || !json.success) {
         toast.error(json.error || "Failed to delete task");
@@ -179,7 +186,10 @@ export function TaskProvider({ children }) {
       return t;
     }));
     try {
-      const res = await fetch(`/api/tasks/${id}/toggle`, { method: "PATCH" });
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${id}/toggle`, {
+        method: "PATCH",
+        credentials: "include",
+      });
       const json = await res.json();
       if (!res.ok || !json.success) {
         toast.error(json.error || "Failed to toggle task");
@@ -207,9 +217,10 @@ export function TaskProvider({ children }) {
       return t;
     }));
     try {
-      const res = await fetch(`/api/tasks/${taskId}/subtask`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/subtask`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ action: "toggle", subtaskId }),
       });
       const json = await res.json();
@@ -226,9 +237,10 @@ export function TaskProvider({ children }) {
 
   const addSubtask = async (taskId, title) => {
     try {
-      const res = await fetch(`/api/tasks/${taskId}/subtask`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/subtask`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ action: "add", title }),
       });
       const json = await res.json();
@@ -247,9 +259,10 @@ export function TaskProvider({ children }) {
 
   const deleteSubtask = async (taskId, subtaskId) => {
     try {
-      const res = await fetch(`/api/tasks/${taskId}/subtask`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/subtask`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ action: "delete", subtaskId }),
       });
       const json = await res.json();
@@ -279,9 +292,10 @@ export function TaskProvider({ children }) {
       return copy;
     });
     try {
-      const res = await fetch("/api/tasks/reorder", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/reorder`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ items }),
       });
       const json = await res.json();
@@ -298,9 +312,10 @@ export function TaskProvider({ children }) {
 
   const batchDelete = async (ids) => {
     try {
-      const res = await fetch("/api/tasks/batch", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/batch`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ action: "delete", ids }),
       });
       const json = await res.json();
@@ -320,9 +335,10 @@ export function TaskProvider({ children }) {
 
   const batchComplete = async (ids) => {
     try {
-      const res = await fetch("/api/tasks/batch", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/batch`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ action: "complete", ids }),
       });
       const json = await res.json();
