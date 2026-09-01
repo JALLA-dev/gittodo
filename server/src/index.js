@@ -14,7 +14,8 @@ const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
+      // Reject requests that don't have an Origin header (like direct browser visits or curl)
+      if (!origin) return callback(new Error('Not allowed by CORS: No Origin header'));
       
       const allowedOrigins = [
         "https://gittodo-nine.vercel.app",
