@@ -11,18 +11,8 @@ export function AppDashboard() {
 
   const [quickAddText, setQuickAddText] = useState("");
 
-  if (loading) {
-    return (
-      <div className="loading-screen">
-        <div className="spinner" />
-        <p>Loading TaskFlow...</p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <AuthView />;
-  }
+  // Loading and authentication are handled by Clerk <SignedIn> wrapper in App.jsx
+  // so we don't need the local AuthContext checks here anymore.
 
   const handleQuickAdd = async (e) => {
     e.preventDefault();
