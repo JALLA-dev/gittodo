@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { SignOutButton, UserButton, useUser } from "@clerk/clerk-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useTasks } from "../context/TaskContext.jsx";
 
 export function Navbar() {
-  const { logout, user } = useAuth();
+  const { logout } = useAuth();
+  const { user: clerkUser } = useUser();
   const { filters, setFilters } = useTasks();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeNav, setActiveNav] = useState("today");
@@ -61,9 +63,14 @@ export function Navbar() {
 
         {/* Footer */}
         <div className="sidebar-footer">
-          <div className="sidebar-user-badge" style={{ marginBottom: 12, padding: "8px 12px", borderRadius: 12, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-            <span className="material-symbols-outlined">account_circle</span>
-            <span style={{ flex: 1, fontWeight: 600 }}>{user?.name || "Signed in"}</span>
+          <div className="sidebar-user-badge" style={{ marginBottom: 12, padding: "8px 12px", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, flex: 1 }}>
+              <span className="material-symbols-outlined">account_circle</span>
+              <span style={{ fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {clerkUser?.firstName || clerkUser?.emailAddresses?.[0]?.emailAddress || "Signed in"}
+              </span>
+            </div>
+            <UserButton afterSignOutUrl="/" />
           </div>
 
           <button className="sidebar-upgrade-btn">
@@ -75,10 +82,12 @@ export function Navbar() {
             <span>Help</span>
           </button>
 
-          <button className="sidebar-nav-item" onClick={logout}>
-            <span className="material-symbols-outlined">logout</span>
-            <span>Logout</span>
-          </button>
+          <SignOutButton signOutCallback={logout}>
+            <button type="button" className="sidebar-nav-item">
+              <span className="material-symbols-outlined">logout</span>
+              <span>Logout</span>
+            </button>
+          </SignOutButton>
         </div>
       </aside>
 
