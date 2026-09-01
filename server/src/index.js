@@ -16,9 +16,14 @@ app.use(
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
       
+      const allowedOrigins = [
+        "https://gittodo-nine.vercel.app",
+        process.env.CLIENT_URL
+      ];
+      
       const allowed = origin.startsWith('http://localhost') || 
                      origin.endsWith('.vercel.app') || 
-                     origin === process.env.CLIENT_URL;
+                     allowedOrigins.includes(origin);
                      
       if (allowed) {
         callback(null, true);
