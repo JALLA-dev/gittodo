@@ -8,8 +8,18 @@ if (!databaseUrl) {
   throw new Error("DATABASE_URL environment variable is required");
 }
 
+const isRenderConnection =
+  databaseUrl.includes("render.com") || databaseUrl.includes("sslmode=require");
+
 export const pool = new Pool({
   connectionString: databaseUrl,
+  ...(isRenderConnection
+    ? {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      }
+    : {}),
 });
 
 // Test connection on startup
