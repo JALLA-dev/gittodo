@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useTasks } from "../context/TaskContext.jsx";
+import { UserButton, useUser } from "@clerk/clerk-react";
 import { Navbar } from "./Navbar.jsx";
 import { ListView } from "./ListView.jsx";
 import { AuthView } from "./AuthView.jsx";
 
 export function AppDashboard() {
-  const { user, loading } = useAuth();
   const { tasks, createTask } = useTasks();
+  const { user: clerkUser } = useUser();
 
   const [quickAddText, setQuickAddText] = useState("");
 
@@ -44,14 +45,25 @@ export function AppDashboard() {
             <div className="main-card prototype-card">
               <div className="main-card-inner">
                 {/* Header */}
-                <div className="card-header prototype-header">
+                <div className="card-header prototype-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
                     <h2 className="card-header-day">{currentDay}</h2>
                     <p className="card-header-year">{currentYear}</p>
                   </div>
-                  <div className="card-header-count">
-                    <span className="count">{tasks.length}</span>
-                    <span className="label">tasks</span>
+                  
+                  <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
+                    <div className="card-header-count">
+                      <span className="count">{tasks.length}</span>
+                      <span className="label">tasks</span>
+                    </div>
+                    
+                    {/* Top Right Profile */}
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px", background: "var(--surface-container)", padding: "6px 12px", borderRadius: "100px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                      <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--on-surface)" }}>
+                        {clerkUser?.firstName || clerkUser?.emailAddresses?.[0]?.emailAddress || "Profile"}
+                      </span>
+                      <UserButton afterSignOutUrl="/" />
+                    </div>
                   </div>
                 </div>
 

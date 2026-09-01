@@ -63,16 +63,6 @@ export function Navbar() {
 
         {/* Footer */}
         <div className="sidebar-footer">
-          <div className="sidebar-user-badge" style={{ marginBottom: 12, padding: "8px 12px", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, flex: 1 }}>
-              <span className="material-symbols-outlined">account_circle</span>
-              <span style={{ fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {clerkUser?.firstName || clerkUser?.emailAddresses?.[0]?.emailAddress || "Signed in"}
-              </span>
-            </div>
-            <UserButton afterSignOutUrl="/" />
-          </div>
-
           <button className="sidebar-upgrade-btn">
             Upgrade to Pro
           </button>
@@ -81,13 +71,6 @@ export function Navbar() {
             <span className="material-symbols-outlined">help_outline</span>
             <span>Help</span>
           </button>
-
-          <SignOutButton signOutCallback={logout}>
-            <button type="button" className="sidebar-nav-item">
-              <span className="material-symbols-outlined">logout</span>
-              <span>Logout</span>
-            </button>
-          </SignOutButton>
         </div>
       </aside>
 
