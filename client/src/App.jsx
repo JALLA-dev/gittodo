@@ -1,4 +1,5 @@
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-react";
+import { dark } from "@clerk/themes";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { ToastProvider } from "./context/ToastContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -25,7 +26,14 @@ export default function App() {
     <ThemeProvider>
       <ToastProvider>
         <AuthProvider>
-          <ClerkProvider publishableKey={clerkPublishableKey}>
+          <ClerkProvider
+            publishableKey={clerkPublishableKey}
+            appearance={{ baseTheme: dark }}
+            afterSignInUrl="/"
+            afterSignUpUrl="/"
+            signInUrl="/"
+            signUpUrl="/"
+          >
             <SignedIn>
               <TaskProvider>
                 <AppDashboard />

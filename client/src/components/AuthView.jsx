@@ -79,8 +79,32 @@ export function AuthView({ setupMissingKey = false }) {
             </button>
           </div>
 
-          <div className="clerk-auth-form">
-            {mode === "signIn" ? <SignIn routing="hash" /> : <SignUp routing="hash" />}
+          <div className="clerk-auth-form" style={{ marginTop: 24 }}>
+            {mode === "signIn" ? (
+              <SignIn
+                routing="hash"
+                afterSignInUrl="/"
+                appearance={{
+                  elements: {
+                    card: { background: "transparent", boxShadow: "none", border: "none", padding: 0 },
+                    headerTitle: { display: "none" },
+                    headerSubtitle: { display: "none" }
+                  }
+                }}
+              />
+            ) : (
+              <SignUp
+                routing="hash"
+                afterSignUpUrl="/"
+                appearance={{
+                  elements: {
+                    card: { background: "transparent", boxShadow: "none", border: "none", padding: 0 },
+                    headerTitle: { display: "none" },
+                    headerSubtitle: { display: "none" }
+                  }
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
