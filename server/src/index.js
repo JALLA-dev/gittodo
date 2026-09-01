@@ -13,12 +13,7 @@ const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 // Middleware
 app.use(
   cors({
-    origin: [
-      "https://gittodo-nine.vercel.app",
-      "http://localhost:5173",
-      "http://localhost:3000",
-      process.env.CLIENT_URL
-    ],
+    origin: ["https://gittodo-nine.vercel.app"],
     credentials: true,
   })
 );
@@ -32,12 +27,7 @@ app.use((req, res, next) => {
   if (req.path === '/api/health') return next();
   
   const origin = req.headers.origin;
-  const allowedOrigins = [
-    "https://gittodo-nine.vercel.app",
-    "http://localhost:5173",
-    "http://localhost:3000",
-    process.env.CLIENT_URL
-  ];
+  const allowedOrigins = ["https://gittodo-nine.vercel.app"];
 
   if (!origin || !allowedOrigins.includes(origin)) {
     return res.status(403).json({ 
