@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
-import { useAuth } from "./AuthContext.jsx";
+// useAuth removed as we use Clerk
 import { useToast } from "./ToastContext.jsx";
 
 const TaskContext = createContext(undefined);
@@ -19,7 +19,6 @@ const initialFilters = {
 };
 
 export function TaskProvider({ children }) {
-  const { user } = useAuth();
   const toast = useToast();
 
   const [tasks, setTasks] = useState([]);
@@ -31,12 +30,8 @@ export function TaskProvider({ children }) {
   const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 50, totalPages: 1 });
 
   const fetchTasks = useCallback(async () => {
-    if (!user) {
-      setTasks([]);
-      setStats(null);
-      return;
-    }
-
+    // Authentication is handled by Clerk <SignedIn> wrapper in App.jsx.
+    // TaskProvider only mounts when signed in, so we can safely fetch.
     try {
       setLoading(true);
       const params = new URLSearchParams();
@@ -66,14 +61,13 @@ export function TaskProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, [user, filters, toast]);
+  }, [filters, toast]);
 
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
 
   const refreshStats = async () => {
-    if (!user) return;
     try {
       const res = await fetch(`${API_BASE_URL}/api/tasks/stats`, { credentials: "include" });
       const json = await res.json();

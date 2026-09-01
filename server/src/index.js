@@ -7,13 +7,25 @@ import authRoutes from "./routes/authRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 
 const app = express();
-const PORT = parseInt(process.env.EXPRESS_PORT || "5000", 10);
+const PORT = parseInt(process.env.PORT || process.env.EXPRESS_PORT || "5000", 10);
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 
 // Middleware
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      
+      const allowed = origin.startsWith('http://localhost') || 
+                     origin.endsWith('.vercel.app') || 
+                     origin === process.env.CLIENT_URL;
+                     
+      if (allowed) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
