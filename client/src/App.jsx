@@ -26,14 +26,14 @@ export default function App() {
       <ToastProvider>
         <AuthProvider>
           <ClerkProvider publishableKey={clerkPublishableKey}>
-            <TaskProvider>
-              <SignedIn>
+            <SignedIn>
+              <TaskProvider>
                 <AppDashboard />
-              </SignedIn>
-              <SignedOut>
-                <AuthView />
-              </SignedOut>
-            </TaskProvider>
+              </TaskProvider>
+            </SignedIn>
+            <SignedOut>
+              <AuthView />
+            </SignedOut>
           </ClerkProvider>
         </AuthProvider>
       </ToastProvider>
