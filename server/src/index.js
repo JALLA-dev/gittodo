@@ -13,31 +13,40 @@ const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 // Middleware
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Reject requests that don't have an Origin header (like direct browser visits or curl)
-      if (!origin) return callback(new Error('Not allowed by CORS: No Origin header'));
-      
-      const allowedOrigins = [
-        "https://gittodo-nine.vercel.app",
-        process.env.CLIENT_URL
-      ];
-      
-      const allowed = origin.startsWith('http://localhost') || 
-                     origin.endsWith('.vercel.app') || 
-                     allowedOrigins.includes(origin);
-                     
-      if (allowed) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: [
+      "https://gittodo-nine.vercel.app",
+      "http://localhost:5173",
+      "http://localhost:3000",
+      process.env.CLIENT_URL
+    ],
     credentials: true,
   })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Strict Origin Checker to prevent direct browser access
+app.use((req, res, next) => {
+  // Allow health checks from anywhere
+  if (req.path === '/api/health') return next();
+  
+  const origin = req.headers.origin;
+  const allowedOrigins = [
+    "https://gittodo-nine.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+    process.env.CLIENT_URL
+  ];
+
+  if (!origin || !allowedOrigins.includes(origin)) {
+    return res.status(403).json({ 
+      success: false, 
+      message: "Forbidden: Direct API access is not allowed. Please use the frontend application." 
+    });
+  }
+  next();
+});
 
 // Security headers
 app.use((_req, res, next) => {
