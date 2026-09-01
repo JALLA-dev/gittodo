@@ -373,6 +373,24 @@ body {
   gap: 4px;
 }
 
+.sidebar-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0, 88, 190, 0.08);
+  color: var(--on-surface);
+  font-weight: 600;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.sidebar-user-badge .material-symbols-outlined {
+  color: var(--primary);
+  font-size: 18px;
+}
+
 .sidebar-upgrade-btn {
   width: 100%;
   padding: 12px;
@@ -399,11 +417,53 @@ body {
   min-height: 100vh;
   position: relative;
   z-index: 10;
+  width: 100%;
 }
 
 @media (min-width: 1024px) {
   .main-content {
     margin-left: 260px;
+    width: calc(100% - 260px);
+  }
+}
+
+@media (max-width: 767px) {
+  .app-layout {
+    display: block;
+  }
+
+  .main-content {
+    padding: 0 12px 24px;
+    min-height: auto;
+  }
+
+  .sidebar {
+    width: min(82vw, 320px);
+  }
+
+  .task-item {
+    gap: 10px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .task-actions {
+    opacity: 1;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .task-text {
+    font-size: 16px;
+  }
+
+  .task-input {
+    font-size: 16px;
+    padding-right: 52px;
+  }
+
+  .auth-card {
+    padding: 28px 18px;
   }
 }
 

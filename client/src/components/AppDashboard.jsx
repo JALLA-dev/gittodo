@@ -20,6 +20,10 @@ export function AppDashboard() {
     );
   }
 
+  if (!user) {
+    return <AuthView />;
+  }
+
   const handleQuickAdd = async (e) => {
     e.preventDefault();
     if (!quickAddText.trim()) return;

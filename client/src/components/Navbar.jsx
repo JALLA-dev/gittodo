@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { useTasks } from "../context/TaskContext.jsx";
 
 export function Navbar() {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const { filters, setFilters } = useTasks();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeNav, setActiveNav] = useState("today");
@@ -61,6 +61,11 @@ export function Navbar() {
 
         {/* Footer */}
         <div className="sidebar-footer">
+          <div className="sidebar-user-badge" style={{ marginBottom: 12, padding: "8px 12px", borderRadius: 12, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <span className="material-symbols-outlined">account_circle</span>
+            <span style={{ flex: 1, fontWeight: 600 }}>{user?.name || "Signed in"}</span>
+          </div>
+
           <button className="sidebar-upgrade-btn">
             Upgrade to Pro
           </button>
