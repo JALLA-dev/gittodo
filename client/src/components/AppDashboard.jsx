@@ -41,29 +41,28 @@ export function AppDashboard() {
         <Navbar />
 
         <main className="main-content">
+          {/* Top Right Profile Header (Outside the Card) */}
+          <header style={{ position: "absolute", top: 24, right: 32, zIndex: 50 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", background: "rgba(28, 30, 38, 0.7)", padding: "6px 12px", borderRadius: "100px", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(12px)" }}>
+              <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--on-surface)" }}>
+                {clerkUser?.firstName || clerkUser?.emailAddresses?.[0]?.emailAddress || "Profile"}
+              </span>
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          </header>
+
           <div className="focus-canvas">
             <div className="main-card prototype-card">
               <div className="main-card-inner">
                 {/* Header */}
-                <div className="card-header prototype-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div className="card-header prototype-header">
                   <div>
                     <h2 className="card-header-day">{currentDay}</h2>
                     <p className="card-header-year">{currentYear}</p>
                   </div>
-                  
-                  <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
-                    <div className="card-header-count">
-                      <span className="count">{tasks.length}</span>
-                      <span className="label">tasks</span>
-                    </div>
-                    
-                    {/* Top Right Profile */}
-                    <div style={{ display: "flex", alignItems: "center", gap: "12px", background: "var(--surface-container)", padding: "6px 12px", borderRadius: "100px", border: "1px solid rgba(255,255,255,0.05)" }}>
-                      <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--on-surface)" }}>
-                        {clerkUser?.firstName || clerkUser?.emailAddresses?.[0]?.emailAddress || "Profile"}
-                      </span>
-                      <UserButton afterSignOutUrl="/" />
-                    </div>
+                  <div className="card-header-count">
+                    <span className="count">{tasks.length}</span>
+                    <span className="label">tasks</span>
                   </div>
                 </div>
 

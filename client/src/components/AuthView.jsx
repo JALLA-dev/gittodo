@@ -1,9 +1,6 @@
-import { useState } from "react";
-import { SignIn, SignUp } from "@clerk/clerk-react";
+import { SignIn } from "@clerk/clerk-react";
 
 export function AuthView({ setupMissingKey = false }) {
-  const [mode, setMode] = useState("signIn");
-
   if (setupMissingKey) {
     return (
       <>
@@ -53,60 +50,10 @@ export function AuthView({ setupMissingKey = false }) {
       </div>
 
       <div className="auth-container">
-        <div className="auth-card auth-clerk-card">
-          <div style={{ textAlign: "center", marginBottom: 20 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 48, height: 48, borderRadius: "50%", background: "var(--primary-container)", marginBottom: 12 }}>
-              <span className="material-symbols-outlined fill" style={{ color: "var(--on-primary-container)", fontSize: 28 }}>landscape</span>
-            </div>
-            <h1 className="text-headline-md auth-title" style={{ color: "var(--primary)", fontWeight: 900 }}>Task Master</h1>
-            <p className="auth-subtitle">Peak Productivity</p>
-          </div>
-
-          <div className="clerk-auth-toggle">
-            <button
-              type="button"
-              className={mode === "signIn" ? "active" : ""}
-              onClick={() => setMode("signIn")}
-            >
-              Sign In
-            </button>
-            <button
-              type="button"
-              className={mode === "signUp" ? "active" : ""}
-              onClick={() => setMode("signUp")}
-            >
-              Sign Up
-            </button>
-          </div>
-
-          <div className="clerk-auth-form" style={{ marginTop: 24 }}>
-            {mode === "signIn" ? (
-              <SignIn
-                routing="hash"
-                afterSignInUrl="/"
-                appearance={{
-                  elements: {
-                    card: { background: "transparent", boxShadow: "none", border: "none", padding: 0 },
-                    headerTitle: { display: "none" },
-                    headerSubtitle: { display: "none" }
-                  }
-                }}
-              />
-            ) : (
-              <SignUp
-                routing="hash"
-                afterSignUpUrl="/"
-                appearance={{
-                  elements: {
-                    card: { background: "transparent", boxShadow: "none", border: "none", padding: 0 },
-                    headerTitle: { display: "none" },
-                    headerSubtitle: { display: "none" }
-                  }
-                }}
-              />
-            )}
-          </div>
-        </div>
+        {/* Render Clerk's native SignIn component exclusively.
+            It handles routing to SignUp automatically via hash routing.
+            The dark theme appearance is managed by ClerkProvider in App.jsx. */}
+        <SignIn routing="hash" afterSignInUrl="/" />
       </div>
     </>
   );
